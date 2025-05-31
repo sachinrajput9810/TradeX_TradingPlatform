@@ -1,16 +1,16 @@
-<<<<<<< HEAD
-# TradeX_TradingPltform
-=======
-# React + Vite
+TradeX is a React-based web application designed to provide a seamless trading experience with an intuitive user interface and responsive design.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
 
-Currently, two official plugins are available:
+- User-friendly dashboard for tracking trades and market data  
+- Real-time updates on stock prices and market trends  
+- Customizable sidebar and navbar for easy navigation  
+- Secure authentication and user management (if applicable)  
+- Responsive design for desktop and mobile devices  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
->>>>>>> 12830ce (Designed sidebar and nabvar)
+- React.js  
+- JavaScript (ES6+)  
+- Tailwind CSS (or your styling framework)  
+- Git & GitHub for version control  
