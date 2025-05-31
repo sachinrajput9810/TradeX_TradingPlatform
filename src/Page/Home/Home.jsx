@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React from 'react';
 import AssetTable from './AssetTable';
-import StockChart from './StockChart';
+import StockChart from "./StockChart";
 
 const Home = () => {
   const [category, setCategory] = React.useState("all");
