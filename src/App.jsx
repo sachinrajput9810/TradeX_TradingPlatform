@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button"
 import Navbar from "./Page/Navbar/Navbar"
-import Sidebar from "./Page/Navbar/Sidebar"
 import Home from "./Page/Home/Home"
-
+import React from 'react';
 function App() {
   return (
     <div >

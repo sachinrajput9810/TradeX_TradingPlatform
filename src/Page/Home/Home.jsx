@@ -1,5 +1,7 @@
-import React from 'react';
 import { Button } from "@/components/ui/button";
+import React from 'react';
+import AssetTable from './AssetTable';
+import StockChart from './StockChart';
 
 const Home = () => {
   const [category, setCategory] = React.useState("all");
@@ -15,7 +17,7 @@ const Home = () => {
     }`;
 
   return (
-    <div className="relative">
+    <div><div className="relative">
       <div className="lg:flex">
         <div className="lg:w-[50%] lg:border-r">
           <div className="p-3 flex items-center gap-4">
@@ -51,6 +53,13 @@ const Home = () => {
               Top Losers
             </Button>
           </div>
+          <AssetTable/>
+        </div>
+
+        <div className='hidden lg:block lg:w-[50%] p-5'>
+            <StockChart/>
+        </div>
+      
         </div>
       </div>
     </div>
