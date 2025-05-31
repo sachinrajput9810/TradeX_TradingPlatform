@@ -78,7 +78,7 @@
 }
 
 .dark {
-  --background: #0a1f44; /* Dark blue shade */
+  --background: #020c1b; /* Dark blue shade */
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);

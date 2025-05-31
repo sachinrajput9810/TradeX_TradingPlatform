@@ -8,7 +8,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { DragHandleHorizontalIcon } from '@radix-ui/react-icons'
+import { DragHandleHorizontalIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Sidebar from './Sidebar'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
@@ -18,7 +18,8 @@ import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 const Navbar = () => {
   return (
     <div className='px-2 py-3 border-b z-50 bg-background bg-opacity-0 sticky top-0 left-0 right-0 flex justify-between items-center'> 
-      <Sheet>
+      <div className='flex items-center gap-3'>
+          <Sheet>
         <SheetTrigger>
             <Button
               variant="ghost"
@@ -44,7 +45,25 @@ const Navbar = () => {
             </SheetHeader>
             <Sidebar />  
           </SheetContent>
-      </Sheet>
+          </Sheet>
+          <p className='text-2xl  cursor-pointer'>
+            <span className='font-bold  text-orange-700'>Trade</span>
+            <span>X</span>
+          </p>
+          <div className='p-0 ml-9'>
+            <Button variant="outline" className="flex items-center gap-3">
+              <MagnifyingGlassIcon/>
+              <span>Search</span>
+            </Button>
+          </div>
+      </div>
+
+      <div>
+          <Avatar>
+            <AvatarFallback>T</AvatarFallback>
+          </Avatar>
+      </div>
+      
       
     </div>
   )
