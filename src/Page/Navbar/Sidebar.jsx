@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import { SheetClose } from "@/components/ui/sheet"
 import { CreditCardIcon, LandmarkIcon, WalletIcon } from 'lucide-react'
+import { useNavigate } from 'react-router-dom';
+
 
 
 const menu = [
@@ -50,15 +52,20 @@ const menu = [
 ]
 
 const Sidebar = () => {
+
+    const navigate = useNavigate();
+    
+
     return (
         <div className='mt-10 space-y-5 px-8'> {/* padding from left and right */}
             {menu.map((item, index) => (
                 <div key={index} className="bg-white rounded-xl shadow-md px-4 py-1">
                     <SheetClose className="w-full">
                         <Button
-                        variant="outline"
-                        className="flex items-center gap-4 text-base text-black p-0"
-                    >
+                            variant="outline"
+                            className="flex items-center gap-4 text-base text-black p-0"
+                            onClick = { () => navigate(item.path) }
+                        >
                         {item.icon}
                         <span>{item.name}</span>
                     </Button>
