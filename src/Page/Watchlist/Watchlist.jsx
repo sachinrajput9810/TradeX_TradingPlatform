@@ -19,7 +19,7 @@ const Watchlist = () => {
 
 
   return (
-<div className='p-5 lg:px-20'>
+    <div className='p-5 lg:px-20'>
        <h1 className='font-bold text-3xl pb-5'>Watchlist</h1>
       <Table className="border">
       <TableHeader>
