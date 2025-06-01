@@ -46,7 +46,7 @@ const AssetTable = () => {
         </TableRow> )  }
        
       </TableBody>
-    </Table>
+        </Table>
     </div>
   )
 }
