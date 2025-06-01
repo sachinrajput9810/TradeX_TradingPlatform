@@ -1,15 +1,10 @@
-import React from 'react'
 import {
   Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card"
-import { WalletIcon } from 'lucide-react'
 import { CopyIcon } from '@radix-ui/react-icons'
+import { WalletIcon } from 'lucide-react'
 const Wallet = () => {
   return (
     <div className="flex flex-col items-center">
