@@ -16,9 +16,9 @@ const TopUpForm = () => {
     setAmount(e.target.value)
   }
 
-    const handleSubmit = () => {
-        console.log(amount, paymentMethod);
-    }
+  const handleSubmit = () => {
+    console.log(amount, paymentMethod)
+  }
 
   return (
     <div className='pt-10 space-y-5'>
@@ -99,7 +99,14 @@ const TopUpForm = () => {
           </label>
         </RadioGroup>
       </div>
-      <Button onClick={handleSubmit} className="w-full py-7  " >Submit</Button>
+
+      {/* Submit Button */}
+      <Button
+        onClick={handleSubmit}
+        className="w-full py-6 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:brightness-110 transition"
+      >
+        Submit
+      </Button>
     </div>
   )
 }
