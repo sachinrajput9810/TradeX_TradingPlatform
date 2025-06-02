@@ -10,19 +10,30 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogHeader
+  DialogHeader,
 } from "@/components/ui/dialog"
 
-import { CopyIcon, ReloadIcon } from "@radix-ui/react-icons"
-import { DollarSign, ShuffleIcon, UploadIcon, WalletIcon } from "lucide-react"
+import {
+  CopyIcon,
+  ReloadIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons"
+import {
+  DollarSign,
+  ShuffleIcon,
+  UploadIcon,
+  WalletIcon,
+} from "lucide-react"
 import TopUpForm from "./TopUpForm"
 import WithdrawalForm from "./WithdrawalForm"
 import TransferForm from "./TransferForm"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 const Wallet = () => {
   return (
     <div className="flex flex-col items-center bg-[#060c1c] min-h-screen py-10 px-4">
       <div className="w-full lg:w-[60%]">
+        {/* Wallet Card */}
         <Card className="bg-[#0f172a] text-white border border-slate-800 shadow-xl">
           <CardHeader className="pb-6">
             <div className="flex justify-between items-center">
@@ -47,7 +58,7 @@ const Wallet = () => {
             </div>
 
             <div className="flex gap-7 mt-5">
-
+              {/* Add Money */}
               <Dialog>
                 <DialogTrigger asChild>
                   <div className="h-24 w-24 hover:text-gray-400 cursor-pointer 
@@ -60,12 +71,12 @@ const Wallet = () => {
                   <DialogHeader>
                     <DialogTitle>Top Up Your Wallet</DialogTitle>
                   </DialogHeader>
-                  <TopUpForm/>
-
+                  <TopUpForm />
                 </DialogContent>
               </Dialog>
 
-               <Dialog>
+              {/* Withdrawal */}
+              <Dialog>
                 <DialogTrigger asChild>
                   <div className="h-24 w-24 hover:text-gray-400 cursor-pointer 
                                   flex flex-col items-center justify-center rounded-md shadow-slate-800 shadow-md">
@@ -77,11 +88,11 @@ const Wallet = () => {
                   <DialogHeader>
                     <DialogTitle>Request Withdrawal</DialogTitle>
                   </DialogHeader>
-                  <WithdrawalForm/>
-
+                  <WithdrawalForm />
                 </DialogContent>
               </Dialog>
 
+              {/* Transfer */}
               <Dialog>
                 <DialogTrigger asChild>
                   <div className="h-24 w-24 hover:text-gray-400 cursor-pointer 
@@ -92,16 +103,51 @@ const Wallet = () => {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle className="text-center text-xl " >Transfer to Other Wallet</DialogTitle>
+                    <DialogTitle className="text-center text-xl">
+                      Transfer to Other Wallet
+                    </DialogTitle>
                   </DialogHeader>
-                  <TransferForm/>
-
+                  <TransferForm />
                 </DialogContent>
               </Dialog>
-
             </div>
           </CardContent>
         </Card>
+
+        {/* History Section */}
+        <div className="py-5 pt-10">
+          <div className="flex gap-2 items-center pb-5">
+            <h1 className="text-2xl font-semibold">History</h1>
+            <UpdateIcon className="h-7 w-7 p-0 cursor-pointer hover:text-gray-400" />
+          </div>
+
+          <div className="space-y-5">
+             
+             {[1,1,1,1,1,1,1,1,1].map((item,index) => <div key={index}>
+                 <Card className="w-full p-4 bg-slate-900 text-white border border-slate-800 shadow-md">
+              <div className="flex justify-between items-center">
+                {/* Left side: Icon + Title + Date */}
+                <div className="flex items-center gap-4">
+                  <Avatar>
+                    <AvatarFallback className="bg-slate-700">
+                      <ShuffleIcon className="h-5 w-5 text-white" />
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className="flex flex-col">
+                    <h1 className="font-medium">Buy Asset</h1>
+                    <p className="text-sm text-gray-400">2025-06-02</p>
+                  </div>
+                </div>
+
+                {/* Right side: Amount */}
+                <p className="text-green-500 font-semibold text-lg">999 USD</p>
+              </div>
+                 </Card>
+             </div>)}
+            
+          </div>
+        </div>
       </div>
     </div>
   )
