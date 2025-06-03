@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { DialogClose } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { DotFilledIcon } from '@radix-ui/react-icons'
@@ -101,12 +102,16 @@ const TopUpForm = () => {
       </div>
 
       {/* Submit Button */}
-      <Button
-        onClick={handleSubmit}
-        className="w-full py-6 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:brightness-110 transition"
-      >
-        Submit
-      </Button>
+      <DialogClose className="w-full">
+        <Button
+          onClick={handleSubmit}
+          className="w-full py-6 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:brightness-110 transition"
+        >
+          Submit
+        </Button>
+      </DialogClose>
+
+      
     </div>
   )
 }
