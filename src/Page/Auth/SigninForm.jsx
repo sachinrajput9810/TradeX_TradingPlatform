@@ -12,8 +12,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
+import { useDispatch } from 'react-redux'
+import { login } from '@/State/Auth/Action'
+
 
 const SigninForm = () => {
+  
+  const dispatch = useDispatch()
 
   const form = useForm({
     resolver: undefined, // Add resolver here if using one (e.g. zodResolver(schema))
@@ -24,6 +29,7 @@ const SigninForm = () => {
   })
 
   const onSubmit = (data) => {
+    dispatch(login(data))
     console.log("Payment Details Submitted:", data)
   }
 
