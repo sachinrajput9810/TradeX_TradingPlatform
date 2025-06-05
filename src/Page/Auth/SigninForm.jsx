@@ -14,12 +14,13 @@ import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
 import { useDispatch } from 'react-redux'
 import { login } from '@/State/Auth/Action'
+import { useNavigate } from 'react-router-dom'
 
 
 const SigninForm = () => {
   
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const form = useForm({
     resolver: undefined, // Add resolver here if using one (e.g. zodResolver(schema))
     defaultValues: {
@@ -29,7 +30,7 @@ const SigninForm = () => {
   })
 
   const onSubmit = (data) => {
-    dispatch(login(data))
+    dispatch(login({data , navigate}))
     console.log("Payment Details Submitted:", data)
   }
 

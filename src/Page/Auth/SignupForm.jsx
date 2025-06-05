@@ -14,10 +14,12 @@ import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
 import { useDispatch } from 'react-redux'
 import { register } from '@/State/Auth/Action'
+import { useNavigate } from 'react-router-dom'
 
 const SignupForm = () => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const form = useForm({
     resolver: undefined, // Add resolver here if using one (e.g. zodResolver(schema))
@@ -29,7 +31,7 @@ const SignupForm = () => {
   })
 
   const onSubmit = (data) => {
-    dispatch(register(data))
+    dispatch(register(data , navigate))
     console.log("Payment Details Submitted:", data)
   }
 

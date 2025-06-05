@@ -11,6 +11,8 @@ import React from 'react';
 import { SheetClose } from "@/components/ui/sheet";
 import { CreditCardIcon, LandmarkIcon, WalletIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '@/State/Auth/Action';
 
 const menu = [
   { name: "Home", path: "/", icon: <HomeIcon className='h-6 w-6' /> },
@@ -26,6 +28,11 @@ const menu = [
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch() ;
+
+  const handleLogout = () => {
+    dispatch(logout()) ;
+  };
 
   return (
     <div className='mt-10 space-y-5 px-8'>
@@ -35,7 +42,12 @@ const Sidebar = () => {
             <Button
               variant="outline"
               className="w-full flex justify-start items-center gap-4 text-base text-black p-0"
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                  navigate(item.path)
+                  if(item.name === "Logout") {
+                    handleLogout() ;
+                  }
+                }}
             >
               {item.icon}
               <span>{item.name}</span>
