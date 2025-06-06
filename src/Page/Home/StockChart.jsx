@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Button } from "@/components/ui/button"; // ensure this path is correct
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMarketChart } from "@/State/Coin/Action";
+import { store } from "@/State/Store";
 
-const StockChart = () => {
+const StockChart = ({coinId}) => {
 
-  const [activeLabel, setActiveLabel] = useState("1 Day");
+  const dispatch = useDispatch()
+  const {coin} = useSelector(store => store)
 
   const timeSeries = [
     {
@@ -25,37 +29,21 @@ const StockChart = () => {
       label: "1 Month",
       value: 30,
     },
+    {
+      keyword: "DIGITAL_CURRENCY_YEARLY",
+      key: "Yearly Time Series",
+      label: "1 Year",
+      value: 365,
+    }
   ];
+
+  const [activeLabel, setActiveLabel] = useState(timeSeries[0]);
+
+  
 
   const series = [
     {
-      data: [
-        [1746097209466, 96109.699924197],
-        [1746101391732, 96193.46052079443],
-        [1746105224895, 96401.97464348341],
-        [1746108290727, 95925.84792324655],
-        [1746112002291, 96749.27550848683],
-        [1746115599128, 97029.26431397643],
-        [1746119549704, 97176.44540379278],
-        [1746122580814, 96792.53145567431],
-        [1746126193844, 96867.06052048807],
-        [1746130195033, 96463.63976230014],
-        [1746133505352, 96468.24929711736],
-        [1746137385915, 96533.24903530022],
-        [1746140987843, 96346.4385297464],
-        [1746144298777, 96465.09077322687],
-        [1746148106540, 97068.51079800248],
-        [1746151728436, 96864.53630852731],
-        [1746155398700, 97058.54156171245],
-        [1746158985690, 97183.42883942672],
-        [1746162292257, 96951.50818834538],
-        [1746165954675, 96715.25683617221],
-        [1746169718328, 96702.21533716211],
-        [1746173362935, 96471.938225181],
-        [1746176694234, 96638.93322232095],
-        [1746180281014, 96682.78962027833],
-        [1746183898715, 96876.45142344802],
-      ],
+      data: coin.marketChart.data
     },
   ];
 
@@ -105,14 +93,19 @@ const StockChart = () => {
     setActiveLabel(label);
    }
 
+   useEffect( () => {
+    dispatch(fetchMarketChart({coinId , days:activeLabel.value  , jwt:localStorage.getItem('jwt')  }))
+   }  , [dispatch, coinId, activeLabel  ])
+
 
  return (
   <div>
     <div className="flex gap-2 mb-4">
       {timeSeries.map((item) => (
         <Button
-            onClick={() => handleActiveLabel(item.label)}
+            onClick={() => handleActiveLabel(item)}
             key={item.label}
+            variant = {activeLabel.label == item.label ? "" : "outline"}
             className={`border border-gray-300 hover:bg-white hover:text-black ${
               activeLabel === item.label ? "bg-white text-black" : "bg-black text-white"
             }`}

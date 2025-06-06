@@ -11,8 +11,12 @@ import {
 } from "@/components/ui/dialog"
 import TradingForm from './TradingForm'
 import StockChart from '../Home/StockChart'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { fetchCoinDetails } from '@/State/Coin/Action'
+import { store } from '@/State/Store'
 
-// ✅ Helper component to lock scroll when mounted
+// ✅ Prevent scroll on open
 const PreventScroll = () => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -20,41 +24,50 @@ const PreventScroll = () => {
       document.body.style.overflow = ''
     }
   }, [])
-
   return null
 }
 
 const StockDetails = () => {
+  const dispatch = useDispatch();
+  const {id} = useParams()
+
+  const {coin} = useSelector(store => store)
+
+  useEffect(() => {
+    dispatch(fetchCoinDetails({coinId:id , jwt: localStorage.getItem("jwt")  }));
+  }, [id])
+ 
   return (
     <div className='p-5 mt-5'>
       <div className='flex justify-between items-center'>
-
-        {/* Left: Coin Info */}
+        {/* Left Info */}
         <div className='flex items-center gap-5'>
           <div className="p-1 rounded-full border border-gray-600 bg-slate-800">
             <Avatar>
-              <AvatarImage src="https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628" />
+              <AvatarImage src={coin.coinDetails?.image.large} />
             </Avatar>
           </div>
 
           <div>
             <div className='flex items-center gap-2'>
-              <p>BTC</p>
+              <p>{coin.coinDetails?.symbol.toUpperCase()}</p>
               <DotIcon className='text-gray-400' />
-              <p className='text-gray-400'>Bitcoin</p>
+              <p className='text-gray-400'>{coin.coinDetails?.name}</p>
             </div>
 
             <div className='flex items-end gap-2'>
-              <p className='text-xl font-bold'>$9898</p>
+              <p className='text-xl font-bold'>${
+                coin.coinDetails?.market_data.current_price.usd
+              }</p>
               <p className='text-red-600'>
-                <span>-12233232424.322</span>
-                <span> (-0.298823%)</span>
+                <span>{coin.coinDetails?.market_data.market_cap_change_24h}</span>
+                <span> ({coin.coinDetails?.market_data.market_cap_change_percentage_24h}%)</span>
               </p>
             </div>
           </div>
         </div>
 
-        {/* Right: Bookmark + Trade Button */}
+        {/* Right Buttons */}
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon">
             <BookmarkFilledIcon className='h-6 w-6 text-white' />
@@ -70,18 +83,12 @@ const StockDetails = () => {
               >
                 <span className="absolute top-0 left-[-50%] w-1/2 h-full bg-white opacity-20
                   transform rotate-12 animate-shine"></span>
-
                 <span className="relative z-10">Trade</span>
               </button>
             </DialogTrigger>
 
-            <DialogContent className="fixed inset-0 overflow-hidden">
-              {/* 👇 Prevent scrolling when this dialog is open */}
+            <DialogContent className="flex justify-center items-center py-20">
               <PreventScroll />
-
-              <DialogHeader>
-                <DialogTitle>How much do you want to spend?</DialogTitle>
-              </DialogHeader>
               <TradingForm />
             </DialogContent>
           </Dialog>
@@ -89,35 +96,20 @@ const StockDetails = () => {
       </div>
 
       <div className='mt-5'>
-        <StockChart />
+        <StockChart coinId={id} />
       </div>
 
-      {/* CSS Animations */}
+      {/* Animation styles */}
       <style jsx>{`
         @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
         @keyframes shine {
-          0% {
-            left: -50%;
-            opacity: 0.2;
-          }
-          50% {
-            left: 100%;
-            opacity: 0.4;
-          }
-          100% {
-            left: 100%;
-            opacity: 0;
-          }
+          0% { left: -50%; opacity: 0.2; }
+          50% { left: 100%; opacity: 0.4; }
+          100% { left: 100%; opacity: 0; }
         }
         .animate-gradientShift {
           animation: gradientShift 3s ease-in-out infinite;

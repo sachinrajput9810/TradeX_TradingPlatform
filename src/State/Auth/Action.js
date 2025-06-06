@@ -22,7 +22,6 @@ export const register = (userData) => async (dispatch) => {
 };
 
 
-
 export const login = (userData) =>async (dispatch) => {
 
     dispatch({ type: LOGIN_REQUEST })
