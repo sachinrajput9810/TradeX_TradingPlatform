@@ -31,7 +31,7 @@ export const getWalletTransactions = ({ jwt }) => async (dispatch) => {
   dispatch({ type: types.GET_WALLET_TRANSACTION_REQUEST });
 
   try {
-    const response = await api.get("/api/wallet/transactions", {
+    const response = await api.get("/api/transactions", {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -146,6 +146,7 @@ export const transferMoney = ({ jwt, walletId, reqData }) => async (dispatch) =>
       type: types.TRANSFER_MONEY_SUCCESS,
       payload: response.data,
     });
+    console.log("transfer response:", response.data);
   } catch (error) {
     console.error(error);
     dispatch({

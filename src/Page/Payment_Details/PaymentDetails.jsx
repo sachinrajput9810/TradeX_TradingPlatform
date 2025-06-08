@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,27 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import PaymentDetailsForm from './PaymentDetailsForm'
+import { store } from '@/State/Store'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPaymentDetails } from '@/State/Withdrawal/Action'
 
 const PaymentDetails = () => {
+  const {withdrawal} = useSelector(store => store)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getPaymentDetails({
+      jwt : localStorage.getItem('jwt')
+    }))
+  } , [])
+
+  const maskAccountNumber = (accountNumber) => {
+      const strAccountNumber = String(accountNumber);
+      return "*".repeat(strAccountNumber.length - 4) + strAccountNumber.slice(-4);
+  };
+
+
+
   const paymentDetailsAvailable = false // change to true/false for testing
 
   return (
@@ -18,7 +37,7 @@ const PaymentDetails = () => {
       <div className='w-full lg:w-[60%]'>
         <h1 className='text-3xl font-bold mb-8'>Payment Details</h1>
 
-        {false ? (
+        {withdrawal.paymentDetails ? (
           <Card className='bg-[#0f172a] border border-slate-800 shadow-md'>
             <CardHeader>
               <CardTitle>Yes Bank</CardTitle>
@@ -26,15 +45,19 @@ const PaymentDetails = () => {
             <CardContent className="space-y-3">
               <div className='flex items-center'>
                 <p className='w-32 text-gray-300'>A/C Number</p>
-                <p className='text-gray-400'>: **********1234</p>
+                <p className='text-gray-400'>
+                  : {withdrawal.paymentDetails?.accountNumber 
+                      ? maskAccountNumber(withdrawal.paymentDetails.accountNumber) 
+                      : "N/A"}
+                </p>
               </div>
               <div className='flex items-center'>
                 <p className='w-32 text-gray-300'>A/C Holder</p>
-                <p className='text-gray-400'>: Trade Boy</p>
+                <p className='text-gray-400'>: {withdrawal.paymentDetails?.accountHolderName }</p>
               </div>
               <div className='flex items-center'>
                 <p className='w-32 text-gray-300'>IFSC</p>
-                <p className='text-gray-400'>: YESB00000007</p>
+                <p className='text-gray-400'>: {withdrawal.paymentDetails?.ifsc } </p>
               </div>
             </CardContent>
           </Card>

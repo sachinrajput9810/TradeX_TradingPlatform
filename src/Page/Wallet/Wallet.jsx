@@ -30,7 +30,7 @@ import TransferForm from "./TransferForm"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import { depositMoney, getUserWallet } from "@/State/Wallet/Action"
+import { depositMoney, getUserWallet, getWalletTransactions } from "@/State/Wallet/Action"
 import { store } from "@/State/Store"
 import { useLocation, useNavigate } from "react-router-dom"
 
@@ -52,9 +52,17 @@ const Wallet = () => {
   const handleFetchUserWallet = () => {
      dispatch(getUserWallet(localStorage.getItem("jwt")))
   } 
+
+  const handleFetchWalletTransactions = () =>{
+    dispatch(getWalletTransactions( {
+      jwt : localStorage.getItem("jwt"),
+    }  ))
+  }
+
   
   useEffect(()=>{
     handleFetchUserWallet()
+    handleFetchWalletTransactions()
   } , [])
 
   useEffect( () => {
@@ -69,7 +77,6 @@ const Wallet = () => {
   } , [orderId, paymentId, razorpayPaymentId])
 
   
-
   return (
 
 
@@ -84,7 +91,7 @@ const Wallet = () => {
                 <div>
                   <CardTitle className="text-2xl font-bold">My Wallet</CardTitle>
                   <div className="flex items-center gap-2 mt-1">
-                    <p className="text-gray-300 text-sm">#A475ED</p>
+                    <p className="text-gray-300 text-sm">#{wallet.userWallet.id}</p>
                     <CopyIcon className="cursor-pointer hover:text-white" />
                   </div>
                 </div>
@@ -96,6 +103,7 @@ const Wallet = () => {
           <CardContent>
             <div className="flex items-center gap-2">
               <DollarSign />
+              {/* {console.log("user wallet balance ", wallet.userWallet.balance) || 0.0} */}
               <span className="text-2xl font-semibold">{wallet.userWallet.balance}</span>
             </div>
 
@@ -165,25 +173,25 @@ const Wallet = () => {
 
           <div className="space-y-5">
              
-             {[1,1,1,1,1,1,1,1,1].map((item,index) => <div key={index}>
+             { wallet.transactions.map((item,index) => <div key={index}>
                  <Card className="w-full p-4 bg-slate-900 text-white border border-slate-800 shadow-md">
               <div className="flex justify-between items-center">
                 {/* Left side: Icon + Title + Date */}
                 <div className="flex items-center gap-4">
-                  <Avatar>
+                  <Avatar onClick={handleFetchWalletTransactions}  >
                     <AvatarFallback className="bg-slate-700">
                       <ShuffleIcon className="h-5 w-5 text-white" />
                     </AvatarFallback>
                   </Avatar>
 
                   <div className="flex flex-col">
-                    <h1 className="font-medium">Buy Asset</h1>
-                    <p className="text-sm text-gray-400">2025-06-02</p>
+                    <h1 className="font-medium">{item.type || item.purpose }</h1>
+                    <p className="text-sm text-gray-400">{item.date}</p>
                   </div>
                 </div>
 
                 {/* Right side: Amount */}
-                <p className="text-green-500 font-semibold text-lg">999 USD</p>
+                <p className="text-green-500 font-semibold text-lg">{item.amount} USD</p>
               </div>
                  </Card>
              </div>)}
@@ -194,5 +202,6 @@ const Wallet = () => {
     </div>
   )
 }
+
 
 export default Wallet
