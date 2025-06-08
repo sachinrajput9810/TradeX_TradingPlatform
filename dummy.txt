@@ -1,0 +1,596 @@
+Top up form 
+
+import { Button } from '@/components/ui/button'
+import { DialogClose } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { paymentHandler } from '@/State/Wallet/Action'
+import { DotFilledIcon } from '@radix-ui/react-icons'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+
+const TopUpForm = () => {
+  const [amount, setAmount] = React.useState("")
+  const [paymentMethod, setPaymentMethod] = React.useState("RAZORPAY")
+  const dispatch = useDispatch()
+
+  const handlePaymentMethodChange = (value) => {
+    setPaymentMethod(value)
+  }
+
+  const handleChange = (e) => {
+    setAmount(e.target.value)
+  }
+
+  const handleSubmit = () => {
+    console.log(amount, paymentMethod)
+    dispatch(paymentHandler({jwt : localStorage.getItem('jwt') , 
+      amount ,
+      paymentMethod
+    }))
+  }
+
+  return (
+    <div className='pt-10 space-y-5'>
+      <div>
+        <h1 className='pb-1'>Enter Amount</h1>
+        <Input
+          onChange={handleChange}
+          value={amount}
+          className="py-2 text-lg mt-2 mb-4"
+          placeholder="$9999"
+        />
+      </div>
+
+      <div>
+        <h1 className='pb-1'>Select Payment Method</h1>
+        <RadioGroup
+          className="flex gap-5"
+          value={paymentMethod}
+          onValueChange={handlePaymentMethodChange}
+        >
+          {/* Razorpay */}
+          <label
+            htmlFor="razorpay"
+            className={`flex items-center space-x-3 p-3 px-5 rounded-md cursor-pointer transition ${
+              paymentMethod === "RAZORPAY" ? "border border-[#3182ce]" : "border border-transparent"
+            }`}
+          >
+            <div className="relative h-6 w-6 rounded-full border border-gray-400 flex items-center justify-center">
+              {paymentMethod === "RAZORPAY" && (
+                <DotFilledIcon className="text-black" />
+              )}
+            </div>
+
+            <RadioGroupItem
+              value="RAZORPAY"
+              id="razorpay"
+              className="sr-only"
+            />
+
+            <div className='bg-white rounded-md px-5 py-2 w-32 flex items-center justify-center'>
+              <img
+                src="https://razorpay.com/newsroom-content/uploads/2020/12/output-onlinepngtools-1-1.png"
+                alt="Razorpay"
+                className="h-6 object-contain"
+              />
+            </div>
+          </label>
+
+          {/* Stripe */}
+          <label
+            htmlFor="stripe"
+            className={`flex items-center space-x-3 p-3 px-5 rounded-md cursor-pointer transition ${
+              paymentMethod === "STRIPE" ? "border border-[#635bff]" : "border border-transparent"
+            }`}
+          >
+            <div className="relative h-6 w-6 rounded-full border border-gray-400 flex items-center justify-center">
+              {paymentMethod === "STRIPE" && (
+                <DotFilledIcon className="text-black" />
+              )}
+            </div>
+
+            <RadioGroupItem
+              value="STRIPE"
+              id="stripe"
+              className="sr-only"
+            />
+
+            <div className='bg-white rounded-md px-2 py-1 w-32 flex items-center justify-center'>
+              <span
+                className="text-[#635bff] font-extrabold text-[22px] tracking-wide lowercase"
+                style={{ fontFamily: `'Helvetica Neue', Helvetica, Arial, sans-serif` }}
+              >
+                stripe
+              </span>
+            </div>
+          </label>
+        </RadioGroup>
+      </div>
+
+      <DialogClose className="w-full">
+        <Button
+          onClick={handleSubmit}
+          className="w-full py-6 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:brightness-110 transition"
+        >
+          Submit
+        </Button>
+      </DialogClose>
+
+      
+    </div>
+  )
+}
+
+export default TopUpForm
+
+---------------------------------------------
+
+Wallet.jsx
+
+
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card"
+
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogHeader,
+} from "@/components/ui/dialog"
+
+import {
+  CopyIcon,
+  ReloadIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons"
+import {
+  DollarSign,
+  ShuffleIcon,
+  UploadIcon,
+  WalletIcon,
+} from "lucide-react"
+import TopUpForm from "./TopUpForm"
+import WithdrawalForm from "./WithdrawalForm"
+import TransferForm from "./TransferForm"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { getUserWallet } from "@/State/Wallet/Action"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { store } from "@/State/Store"
+
+const Wallet = () => {
+
+  const wallet = useSelector(store => store.wallet)
+  console.log("Wallet -- ", wallet)
+  
+
+
+   const handleFetchUserWallet = () =>{
+    dispatch(getUserWallet(localStorage.getItem("jwt")))
+  }
+
+  const dispatch = useDispatch()
+  useEffect( () =>{
+    handleFetchUserWallet()
+  } , [])
+
+
+  
+
+  return (
+    <div className="flex flex-col items-center bg-[#060c1c] min-h-screen py-10 px-4">
+      <div className="w-full lg:w-[60%]">
+        {/* Wallet Card */}
+        <Card className="bg-[#0f172a] text-white border border-slate-800 shadow-xl">
+          <CardHeader className="pb-6">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-5">
+                <WalletIcon size={30} className="text-white" />
+                <div>
+                  <CardTitle className="text-2xl font-bold">My Wallet</CardTitle>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-gray-300 text-sm">#A475ED</p>
+                    <CopyIcon className="cursor-pointer hover:text-white" />
+                  </div>
+                </div>
+              </div>
+              <ReloadIcon onClick={handleFetchUserWallet} className="w-6 h-6 cursor-pointer hover:text-white" />
+            </div>
+          </CardHeader>
+
+          <CardContent>
+            <div className="flex items-center gap-2">
+              <DollarSign />
+              
+              <span className="text-2xl font-semibold">{wallet.userWallet.balance}</span>
+            </div>
+
+            <div className="flex gap-7 mt-5">
+              {/* Add Money */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="h-24 w-24 hover:text-gray-400 cursor-pointer 
+                                  flex flex-col items-center justify-center rounded-md shadow-slate-800 shadow-md">
+                    <UploadIcon />
+                    <span className="text-sm mt-2">Add Money</span>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Top Up Your Wallet</DialogTitle>
+                  </DialogHeader>
+                  <TopUpForm />
+                </DialogContent>
+              </Dialog>
+
+              {/* Withdrawal */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="h-24 w-24 hover:text-gray-400 cursor-pointer 
+                                  flex flex-col items-center justify-center rounded-md shadow-slate-800 shadow-md">
+                    <UploadIcon />
+                    <span className="text-sm mt-2">Withdrawal</span>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Request Withdrawal</DialogTitle>
+                  </DialogHeader>
+                  <WithdrawalForm />
+                </DialogContent>
+              </Dialog>
+
+              {/* Transfer */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="h-24 w-24 hover:text-gray-400 cursor-pointer 
+                                  flex flex-col items-center justify-center rounded-md shadow-slate-800 shadow-md">
+                    <ShuffleIcon />
+                    <span className="text-sm mt-2">Transfer</span>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="text-center text-xl">
+                      Transfer to Other Wallet
+                    </DialogTitle>
+                  </DialogHeader>
+                  <TransferForm />
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* History Section */}
+        <div className="py-5 pt-10">
+          <div className="flex gap-2 items-center pb-5">
+            <h1 className="text-2xl font-semibold">History</h1>
+            <UpdateIcon className="h-7 w-7 p-0 cursor-pointer hover:text-gray-400" />
+          </div>
+
+          <div className="space-y-5">
+             
+             {[1,1,1,1,1,1,1,1,1].map((item,index) => <div key={index}>
+                 <Card className="w-full p-4 bg-slate-900 text-white border border-slate-800 shadow-md">
+              <div className="flex justify-between items-center">
+                {/* Left side: Icon + Title + Date */}
+                <div className="flex items-center gap-4">
+                  <Avatar>
+                    <AvatarFallback className="bg-slate-700">
+                      <ShuffleIcon className="h-5 w-5 text-white" />
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className="flex flex-col">
+                    <h1 className="font-medium">Buy Asset</h1>
+                    <p className="text-sm text-gray-400">2025-06-02</p>
+                  </div>
+                </div>
+
+                {/* Right side: Amount */}
+                <p className="text-green-500 font-semibold text-lg">999 USD</p>
+              </div>
+                 </Card>
+             </div>)}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Wallet
+
+
+
+-------------------------------------------------------
+
+Store.js
+
+import {thunk} from "redux-thunk";
+import authReducer from "./Auth/Reducer";
+import {combineReducers, legacy_createStore, applyMiddleware } from "redux";
+import coinReducer from "./Coin/Reducer";
+import walletReducer from "./Wallet/Reducer";
+
+const rootReducer = combineReducers ({
+        auth : authReducer ,
+        coin : coinReducer ,
+        wallet : walletReducer 
+});
+
+export const store=legacy_createStore(rootReducer, applyMiddleware(thunk))
+
+
+-------------------------------------------------------
+
+ActionType coin
+
+export const FETCH_COIN_LIST_REQUEST = "FETCH_COIN_LIST_REQUEST";
+export const FETCH_COIN_LIST_SUCCESS = "FETCH_COIN_LIST_SUCCESS";
+export const FETCH_COIN_LIST_FAILURE = "FETCH_COIN_LIST_FAILURE";
+export const FETCH_TOP_50_COINS_REQUEST = 'FETCH_TOP_50_COINS_REQUEST';
+export const FETCH_TOP_50_COINS_SUCCESS = 'FETCH_TOP_50_COINS_SUCCESS';
+export const FETCH_TOP_50_COINS_FAILURE = 'FETCH_TOP_50_COINS_FAILURE';
+export const FETCH_MARKET_CHART_REQUEST = 'FETCH_MARKET_CHART_REQUEST';
+export const FETCH_MARKET_CHART_SUCCESS = 'FETCH_MARKET_CHART_SUCCESS';
+export const FETCH_MARKET_CHART_FAILURE = 'FETCH_MARKET_CHART_FAILURE';
+export const FETCH_COIN_BY_ID_REQUEST = 'FETCH_COIN_BY_ID_REQUEST';
+export const FETCH_COIN_BY_ID_SUCCESS = 'FETCH_COIN_BY_ID_SUCCESS';
+export const FETCH_COIN_BY_ID_FAILURE = 'FETCH_COIN_BY_ID_FAILURE';
+export const FETCH_COIN_DETAILS_REQUEST = 'FETCH_COIN_DETAILS_REQUEST';
+export const FETCH_COIN_DETAILS_SUCCESS = 'FETCH_COIN_DETAILS_SUCCESS';
+export const FETCH_COIN_DETAILS_FAILURE = 'FETCH_COIN_DETAILS_FAILURE';
+export const SEARCH_COIN_REQUEST = 'SEARCH_COIN_REQUEST';
+export const SEARCH_COIN_SUCCESS = 'SEARCH_COIN_SUCCESS';
+export const SEARCH_COIN_FAILURE = 'SEARCH_COIN_FAILURE';
+
+
+----------------------------------------
+
+Wallet Action.js
+
+import api from "@/Config/api";
+import * as types from "./ActionTypes";
+
+// Get user wallet
+export const getUserWallet = (jwt) => async (dispatch) => {
+  dispatch({ type: types.GET_USER_WALLET_REQUEST });
+
+  try {
+    const response = await api.get("/api/wallet", {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+
+    dispatch({
+      type: types.GET_USER_WALLET_SUCCESS,
+      payload: response.data,
+    });
+    console.log("user wallet", response.data);
+    
+  } catch (error) {
+    console.error(error);
+    dispatch({
+      type: types.GET_USER_WALLET_FAILURE,
+      error: error.message,
+    });
+  }
+};
+
+// Get wallet transactions
+export const getWalletTransactions = ({ jwt }) => async (dispatch) => {
+  dispatch({ type: types.GET_WALLET_TRANSACTION_REQUEST });
+
+  try {
+    const response = await api.get("/api/wallet/transactions", {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+
+    dispatch({
+      type: types.GET_WALLET_TRANSACTIONS_SUCCESS,
+      payload: response.data,
+    });
+
+    console.log("wallet transactions", response.data);
+  } catch (error) {
+    console.error("error", error);
+    dispatch({
+      type: types.GET_WALLET_TRANSACTION_FAILURE,
+      error: error.message,
+    });
+  }
+};
+
+// Deposit money into wallet
+export const depositMoney = ({ jwt, orderId, paymentId, navigate }) => async (dispatch) => {
+  dispatch({ type: types.DEPOSIT_MONEY_REQUEST });
+
+  try {
+    const response = await api.put(
+      "/api/wallet/deposit",
+      null,
+      {
+        params: {
+          order_id: orderId,
+          payment_id: paymentId,
+        },
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: types.DEPOSIT_MONEY_SUCCESS,
+      payload: response.data,
+    });
+
+    console.log("Deposit response:", response.data);
+
+    if (navigate) {
+      navigate("/wallet");
+    }
+  } catch (error) {
+    console.error(error);
+    dispatch({
+      type: types.DEPOSIT_MONEY_FAILURE,
+      error: error.message,
+    });
+  }
+};
+
+// Initiate payment (redirect to payment gateway)
+export const paymentHandler = ({ jwt, amount, paymentMethod }) => async (dispatch) => {
+  dispatch({ type: types.DEPOSIT_MONEY_REQUEST });
+
+  try {
+    const response = await api.post(
+      `/api/payment/${paymentMethod}/amount/${amount}`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    // Redirect to payment page
+    window.location.href = response.data.payment_url;
+
+    // Optional: dispatch success if needed
+    // dispatch({
+    //   type: types.DEPOSIT_MONEY_SUCCESS,
+    //   payload: response.data,
+    // });
+  } catch (error) {
+    console.error(error);
+    dispatch({
+      type: types.DEPOSIT_MONEY_FAILURE,
+      error: error.message,
+    });
+  }
+};
+
+// Transfer money to another wallet
+export const transferMoney = ({ jwt, walletId, reqData }) => async (dispatch) => {
+  dispatch({ type: types.TRANSFER_MONEY_REQUEST });
+
+  try {
+    const response = await api.put(
+      `/api/wallet/${walletId}/transfer`,
+      reqData,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: types.TRANSFER_MONEY_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    console.error(error);
+    dispatch({
+      type: types.TRANSFER_MONEY_FAILURE,
+      error: error.message,
+    });
+  }
+};
+
+-------------------------------------
+
+Wallet ActionType
+
+// Action types for getting user wallet
+export const GET_USER_WALLET_REQUEST = 'GET_USER_WALLET_REQUEST';
+export const GET_USER_WALLET_SUCCESS = 'GET_USER_WALLET_SUCCESS';
+export const GET_USER_WALLET_FAILURE = 'GET_USER_WALLET_FAILURE';
+
+export const GET_WALLET_TRANSACTION_REQUEST = 'GET_WALLET_TRANSACTION_REQUEST';
+export const GET_WALLET_TRANSACTION_SUCCESS = 'GET_WALLET_TRANSACTION_SUCCESS';
+export const GET_WALLET_TRANSACTION_FAILURE = 'GET_WALLET_TRANSACTION_FAILURE';
+
+// Action types for depositing money
+export const DEPOSIT_MONEY_REQUEST = 'DEPOSIT_MONEY_REQUEST';
+export const DEPOSIT_MONEY_SUCCESS = 'DEPOSIT_MONEY_SUCCESS';
+export const DEPOSIT_MONEY_FAILURE = 'DEPOSIT_MONEY_FAILURE';
+
+// Action types for transferring money
+export const TRANSFER_MONEY_REQUEST = 'TRANSFER_MONEY_REQUEST';
+export const TRANSFER_MONEY_SUCCESS = 'TRANSFER_MONEY_SUCCESS';
+export const TRANSFER_MONEY_FAILURE = 'TRANSFER_MONEY_FAILURE';
+
+
+------------------------------------
+
+Wallet Reducer
+
+import * as types from "./ActionTypes";
+
+const initialState = {
+  userWallet: {},
+  loading: false,
+  error: null,
+  transactions: [],
+};
+
+const walletReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case types.GET_USER_WALLET_REQUEST:
+    case types.DEPOSIT_MONEY_REQUEST:
+    case types.TRANSFER_MONEY_REQUEST:
+    case types.GET_WALLET_TRANSACTION_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case types.GET_WALLET_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        transactions: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case types.GET_USER_WALLET_SUCCESS:
+    case types.TRANSFER_MONEY_SUCCESS:
+    case types.DEPOSIT_MONEY_SUCCESS:
+      return {
+        ...state,
+        userWallet: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case types.GET_USER_WALLET_FAILURE:
+    case types.DEPOSIT_MONEY_FAILURE:
+    case types.TRANSFER_MONEY_FAILURE:
+    case types.GET_WALLET_TRANSACTION_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default walletReducer;
