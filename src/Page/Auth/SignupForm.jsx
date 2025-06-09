@@ -32,7 +32,7 @@ const SignupForm = () => {
 
   const onSubmit = (data) => {
     dispatch(register(data , navigate))
-    console.log("Payment Details Submitted:", data)
+    console.log("User Registered :: ", data)
   }
 
   return (
