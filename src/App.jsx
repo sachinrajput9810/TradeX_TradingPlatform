@@ -42,7 +42,7 @@ function App() {
             <Route path="/watchlist" element={<Watchlist />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<SearchCoin />} />
-            <Route path="*" element={<Notfound />} />
+            {/* <Route path="*" element={<Notfound />} /> */}
           </Routes>
         </div>
       ) : <Auth/> }

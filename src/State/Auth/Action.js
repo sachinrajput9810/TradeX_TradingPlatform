@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionTypes";
 
-export const register = (userData) => async (dispatch) => {
+export const register = (userData , navigate) => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
 
     const baseUrl = "http://localhost:8080";
@@ -14,7 +14,7 @@ export const register = (userData) => async (dispatch) => {
         dispatch({ type: REGISTER_SUCCESS, payload: user.jwt });
         localStorage.setItem('jwt', user.jwt);
 
-        userData.navigate("/"); // redirect to home
+        navigate("/"); // redirect to home
     } catch (error) {
         dispatch({ type: REGISTER_FAILURE, payload: error.message });
         console.log(error);

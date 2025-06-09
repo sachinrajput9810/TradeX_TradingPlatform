@@ -24,9 +24,9 @@ const Home = () => {
   const [category, setCategory] = React.useState("all");
   const [inputValue, setInputValue] = React.useState("");
 
-  const [isBotReleased , setIsBotReleased] = React.useState(false);
+  // const [isBotReleased , setIsBotReleased] = React.useState(false);
 
-  const handleBotReleased = () => setIsBotReleased(!isBotReleased);
+  // const handleBotReleased = () => setIsBotReleased(!isBotReleased);
 
   const {coin} = useSelector(store => store)
   // console.log("Coin List -- ", coin);
@@ -150,13 +150,13 @@ const Home = () => {
         </div>
       
        </div>
-       <section className="absolute bottom-5 right-5 z-40 flex flex-col justify-end items-end gap-2">
+       {/* <section className="absolute bottom-5 right-5 z-40 flex flex-col justify-end items-end gap-2">
 
              {isBotReleased && <div className="rounded-md w-[20rem] md:w-[25rem] lg:w-[25rem] h-[70vh] bg-slate-900    ">
                  <div className="flex justify-between items-center border-b px-6 h-[12%]">
                       <p>Chat Bot</p>
                       <Button 
-                        onClick={handleBotReleased} 
+                        // onClick={handleBotReleased} 
                         variant="ghost" 
                         size="icon" 
                         className="cursor-pointer"
@@ -226,7 +226,7 @@ const Home = () => {
               </div>
 
 
-       </section>
+       </section> */}
     </div>
   );
 };

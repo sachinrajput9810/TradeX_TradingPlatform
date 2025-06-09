@@ -22,7 +22,7 @@ const SignupForm = () => {
   const navigate = useNavigate()
 
   const form = useForm({
-    resolver: undefined, // Add resolver here if using one (e.g. zodResolver(schema))
+    resolver: undefined, 
     defaultValues: {
       fullName: '',
       email: '',
