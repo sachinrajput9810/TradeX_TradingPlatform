@@ -25,6 +25,7 @@ export const withdrawalRequest = ({ amount, jwt }) => async (dispatch) => {
   dispatch({ type: WITHDRAWAL_REQUEST });
 
   try {
+    console.log("withdrawal ---- amount", amount);
     const response = await api.post(`/api/withdrawal/${amount}`, null, {
       headers: { Authorization: `Bearer ${jwt}` },
     });

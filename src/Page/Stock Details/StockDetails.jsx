@@ -1,5 +1,5 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { BookmarkFilledIcon, DotIcon } from '@radix-ui/react-icons'
+import { BookmarkFilledIcon, BookmarkIcon, DotIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button'
 import React, { useEffect } from 'react'
 import {
@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchCoinDetails } from '@/State/Coin/Action'
 import { store } from '@/State/Store'
+import { addItemToWatchlist, getUserWatchlist } from '@/State/WatchList/Action'
+import { existInWatchlist } from '@/Utils/existInWatchlist'
 
 // ✅ Prevent scroll on open
 const PreventScroll = () => {
@@ -27,15 +29,22 @@ const PreventScroll = () => {
   return null
 }
 
+
 const StockDetails = () => {
   const dispatch = useDispatch();
   const {id} = useParams()
 
-  const {coin} = useSelector(store => store)
+  const {coin , watchlist} = useSelector(store => store)
 
   useEffect(() => {
     dispatch(fetchCoinDetails({coinId:id , jwt: localStorage.getItem("jwt")  }));
+    dispatch(getUserWatchlist(localStorage.getItem('jwt')))
   }, [id])
+
+
+  const handleAddToWatchList = () =>{
+    dispatch(addItemToWatchlist({coinId : coin.coinDetails?.id , jwt: localStorage.getItem("jwt")   }));
+  }
  
   return (
     <div className='p-5 mt-5'>
@@ -69,9 +78,15 @@ const StockDetails = () => {
 
         {/* Right Buttons */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon">
-            <BookmarkFilledIcon className='h-6 w-6 text-white' />
+          <Button onClick={handleAddToWatchList}>
+            {existInWatchlist(watchlist.items, coin.coinDetails) ? (
+              <BookmarkFilledIcon className="h-6 w-6" />
+            ) : (
+              <BookmarkIcon className="h-6 w-6" />
+            )}
           </Button>
+
+
 
           <Dialog>
             <DialogTrigger asChild>

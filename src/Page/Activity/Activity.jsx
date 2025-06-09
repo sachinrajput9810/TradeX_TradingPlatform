@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Table,
   TableBody,
@@ -10,7 +10,18 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllOrdersForUser } from '@/State/Order/Action'
+import { store } from '@/State/Store'
+import { calculateProfit } from '@/Utils/calculateProfit'
 const Activity = () => {
+  const dispatch = useDispatch()
+  const {order} = useSelector(store => store)
+
+  useEffect( () => {
+    dispatch(getAllOrdersForUser({jwt : localStorage.getItem('jwt')  }))
+  }  , [])
+
   return (
     <div className='p-5 lg:px-20'>
        <h1 className='font-bold text-3xl pb-5'>Activity</h1>
@@ -28,7 +39,7 @@ const Activity = () => {
       </TableHeader>
 
       <TableBody>
-        {[1,1,1,1,1,1,1,1,1].map((item , index) =>  
+        { order.orders.map((item , index) =>  
         <TableRow key={index} >
         <TableCell>
           <p>2025/05/01</p>
@@ -39,18 +50,19 @@ const Activity = () => {
               <Avatar className="h-10 w-10">
                 <AvatarImage
                   className="h-10 w-10 rounded-full"
-                  src="https://assets.coingecko.com/coins/images/1/standard/bitcoin.png?1696501400"
+                  src={item.orderItem.coin.image}
                 />
               </Avatar>
-              <span className="text-sm font-semibold">Bitcoin</span>
+              <span className="text-sm font-semibold">{item.orderItem.coin.name}</span>
             </div>
           </TableCell>
-          <TableCell>36,316,873,480</TableCell>
-          <TableCell>2,062,249,389,058</TableCell>
-          <TableCell>-1.49</TableCell>
-          <TableCell className="">$103,771</TableCell>
+          
+          <TableCell>{item.orderItem.buyPrice}</TableCell>
+          <TableCell>{item.orderItem.sellPrice}</TableCell>
+          <TableCell>{item.orderType}</TableCell>
+          <TableCell className=""> {calculateProfit(item)}</TableCell>
           <TableCell className="text-right">  
-               3432
+               {item.price}
           </TableCell>
         </TableRow> )  }
              

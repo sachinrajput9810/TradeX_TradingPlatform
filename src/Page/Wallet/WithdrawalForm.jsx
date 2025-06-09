@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { DialogClose } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { withdrawalRequest } from '@/State/Withdrawal/Action'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 const WithdrawalForm = () => {
   const dispatch = useDispatch()
-  const {wallet} = useSelector(store => store)
+  const {wallet , withdrawal} = useSelector(store => store)
 
   const [amount, setAmount] = React.useState("")
 
@@ -14,9 +15,21 @@ const WithdrawalForm = () => {
     setAmount(e.target.value)
   }
 
+
   const handleSubmit = () => {
-    console.log("Withdrawal Amount:", amount);
+    console.log("------------Withdrawal Amount:---------  ", amount);
+    dispatch(withdrawalRequest({
+      amount ,
+      jwt : localStorage.getItem('jwt'),  
+    }))
+    
   }
+
+  const maskAccountNumber = (accountNumber) => {
+      const strAccountNumber = String(accountNumber);
+      return "*".repeat(strAccountNumber.length - 4) + strAccountNumber.slice(-4);
+  };
+
 
   return (
     <div className="pt-10 space-y-5">
@@ -49,9 +62,12 @@ const WithdrawalForm = () => {
             src='https://t4.ftcdn.net/jpg/05/21/79/35/240_F_521793535_R3TIFqxDcvjYME4O4tVeJspRqyvGbo8E.jpg'
             alt="Bank Icon"
           />
+          
           <div>
-            <p className='text-xl font-bold'>Yes Bank</p>
-            <p className='text-xs'>***********3673</p>
+            <p className='text-xl font-bold'>{withdrawal.paymentDetails?.bankName}</p>
+            <p className='text-xs'> {withdrawal.paymentDetails?.accountNumber 
+                      ? maskAccountNumber(withdrawal.paymentDetails.accountNumber) 
+                      : "N/A"} </p>
           </div>
         </div>
       </div>
