@@ -5,7 +5,7 @@ export const register = (userData , navigate) => async (dispatch) => {
     console.log("Register method called")
     dispatch({ type: REGISTER_REQUEST });
 
-    const baseUrl = "https://tradexapp-env.eba-p3jjfcsu.us-east-1.elasticbeanstalk.com";
+    const baseUrl = "http://tradexapp-env.eba-p3jjfcsu.us-east-1.elasticbeanstalk.com" ;
 
     try {
         const response = await axios.post(`${baseUrl}/auth/signup`, userData);
