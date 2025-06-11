@@ -4,7 +4,7 @@ import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LO
 export const register = (userData , navigate) => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
 
-    const baseUrl = "http://localhost:8080";
+    const baseUrl = "http://tradexapp-env.eba-p3jjfcsu.us-east-1.elasticbeanstalk.com";
 
     try {
         const response = await axios.post(`${baseUrl}/auth/signup`, userData);
