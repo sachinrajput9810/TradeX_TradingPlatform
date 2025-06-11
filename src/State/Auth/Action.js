@@ -2,10 +2,9 @@ import axios from "axios";
 import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionTypes";
 
 export const register = (userData , navigate) => async (dispatch) => {
-    console.log("Register method called")
     dispatch({ type: REGISTER_REQUEST });
 
-    const baseUrl = "http://tradexapp-env.eba-p3jjfcsu.us-east-1.elasticbeanstalk.com" ;
+    const baseUrl = "http://localhost:8080";
 
     try {
         const response = await axios.post(`${baseUrl}/auth/signup`, userData);
